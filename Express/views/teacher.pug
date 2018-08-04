@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    h1= "Teacher user"
+    h2 待签字提案:
+    a(href="invoke/queryMyWaitBill") queryMyWaitBill
+    p
+    h2 签字：
+    form(name="endorse" action="invoke/endorse" method="get")
+        p Number
+        input(type="text" name="number")
+        p accept or reject
+        input(type="text" name="status")
+        p
+        input(type="submit" value="submit")

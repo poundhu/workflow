@@ -1,0 +1,25 @@
+extends layout
+
+block content
+    h1= "Student user: "+user.username
+    h2 我的提案:
+    a(href="invoke/queryMyBill") queryMyBill
+    p
+    h2 New bill：
+    form(name="issue" action="invoke/issue" method="get")
+        p BillInfoID
+        input(type="text" name="BillInfoID")
+        p BillInfoType
+        input(type="text" name="BillInfoType")
+        p BillInfoIsseDate
+        input(type="text" name="BillInfoIsseDate")
+        p Your ID
+        input(type="text" name="DrwrCmID")
+        p Your real name
+        input(type="text" name="DrwrAcct")
+        p WaitEndorserCmID
+        input(type="text" name="WaitEndorserCmID")
+        p WaitEndorserAcct
+        input(type="text" name="WaitEndorserAcct")
+        p
+        input(type="submit" value="submit")

@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  h1 注册
+  form(name="register" action="register" method="get")
+    p username
+    input(type="text" name="username")
+    p realname
+    input(type="text" name="name")
+    p id number
+    input(type="text" name="id")
+    p type
+    input(type="text" name="type")
+    p password
+    input(type="password" name="password")
+    p
+    input(type="submit" value="注册")
+
+  h1 登录
+  form(name="login" action="login" method="get")
+    p username
+    input(type="text" name="username")
+    p password
+    input(type="password" name="password")
+    p
+    input(type="submit" value="登录")
