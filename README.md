@@ -1,4 +1,6 @@
-## Balance transfer
+## 审批工作流
+
+基于官方示例[fabric-samples/balance-transfer](https://github.com/hyperledger/fabric-samples/tree/release-1.1/balance-transfer)
 
 A sample Node.js app to demonstrate **__fabric-client__** & **__fabric-ca-client__** Node.js SDK APIs
 
