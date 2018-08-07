@@ -21,6 +21,8 @@ import (
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
+	"strconv"
+	"time"
 )
 
 var logger = shim.NewLogger("example_cc0")
@@ -32,6 +34,7 @@ const (
 	BillInfo_State_TeacherReject   = "TeacherReject"
 	BillInfo_State_SchoolSigned    = "TeacherSigned"
 	BillInfo_State_SchoolReject    = "SchoolReject"
+	BillInfo_State_OverDue         = "OverDue"
 )
 const HolderIdDayTimeBillTypeBillNoIndexName = "holderId~dayTime-billType-billNo"
 
@@ -59,6 +62,9 @@ type HistoryItem struct {
 
 // 票据key的前缀
 const Bill_Prefix = "Bill_"
+
+//超时违约key的前缀
+const OverDue_Prefix = "OD_"
 
 // search表的映射名
 const IndexName = "holderName~billNo"
@@ -203,6 +209,7 @@ func (a *WorkflowChaincode) issue(stub shim.ChaincodeStubInterface, args []strin
 		return shim.Error(res)
 	}
 	logger.Error("%s", timestamp)
+	bill.BillInfoIsseDate = string(time.Now().Unix())
 
 	// 更改票据信息和状态并保存票据:票据状态设为待背书
 	bill.State = BillInfo_State_WaitTeacherSign
@@ -276,7 +283,7 @@ func (a *WorkflowChaincode) accept_teacher(stub shim.ChaincodeStubInterface, arg
 	return shim.Success(res)
 }
 
-// 老师背书人接受背书
+// 学校背书人接受背书
 // args: 0 - Bill_No ; 1 - Endorser CmId ; 2 - Endorser Acct
 func (a *WorkflowChaincode) accept_school(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	if len(args) < 3 {
@@ -297,11 +304,26 @@ func (a *WorkflowChaincode) accept_school(stub shim.ChaincodeStubInterface, args
 		return shim.Error(res)
 	}
 	stub.DelState(holderNameBillNoIndexKey)
+	var return_info string
+	//如果逾期
+	duetime, err := strconv.Atoi(bill.BillInfoDueDate)
+	if bill.BillInfoDueDate != "" && duetime < int(time.Now().Unix()) {
+		//状态改为逾期
+		bill.WaitEndorserCmID = ""
+		bill.WaitEndorserAcct = ""
+		bill.State = BillInfo_State_OverDue
 
-	// 更改票据信息和状态并保存票据: 将前手持票人改为背书人,重置待背书人,票据状态改为背书签收
-	bill.WaitEndorserCmID = ""
-	bill.WaitEndorserAcct = ""
-	bill.State = BillInfo_State_SchoolSigned
+		//写入逾期惩罚
+		stub.PutState(OverDue_Prefix+bill.DrwrCmID, []byte("overdue"))
+		return_info = "This bill is overdue"
+	} else {
+		// 更改票据信息和状态并保存票据: 将前手持票人改为背书人,重置待背书人,票据状态改为背书签收
+		bill.WaitEndorserCmID = ""
+		bill.WaitEndorserAcct = ""
+		bill.State = BillInfo_State_SchoolSigned
+		return_info = "invoke accept success"
+	}
+
 	// 保存票据
 	_, bl = a.putBill(stub, bill)
 	if !bl {
@@ -309,7 +331,7 @@ func (a *WorkflowChaincode) accept_school(stub shim.ChaincodeStubInterface, args
 		return shim.Error(res)
 	}
 
-	res := getRetByte(0, "invoke accept success")
+	res := getRetByte(0, return_info)
 	return shim.Success(res)
 }
 
@@ -435,6 +457,7 @@ func (a *WorkflowChaincode) queryMyWaitBill(stub shim.ChaincodeStubInterface, ar
 			billList = append(billList, bill)
 		}
 	}
+
 	// 取得并返回票据数组
 	b, err := json.Marshal(billList)
 	if err != nil {
@@ -490,6 +513,71 @@ func (a *WorkflowChaincode) queryByBillNo(stub shim.ChaincodeStubInterface, args
 	// 将背书历史做为票据的一个属性 一同返回
 	bill.History = history
 
+	b, err := json.Marshal(bill)
+	if err != nil {
+		res := getRetString(1, "WorkflowChaincode Marshal queryByBillNo billList error")
+		return shim.Error(res)
+	}
+	return shim.Success(b)
+}
+
+// 检查是否超时违约
+//  0 - Bill_No ;
+func (a *WorkflowChaincode) checkDue(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	if len(args) != 1 {
+		res := getRetString(1, "WorkflowChaincode queryByBillNo args!=1")
+		return shim.Error(res)
+	}
+	// 取得该票据
+	bill, bl := a.getBill(stub, args[0])
+	if !bl {
+		res := getRetString(1, "WorkflowChaincode queryByBillNo get bill error")
+		return shim.Error(res)
+	}
+
+	// 取得背书历史: 通过fabric api取得该票据的变更历史
+	resultsIterator, err := stub.GetHistoryForKey(Bill_Prefix + args[0])
+	if err != nil {
+		res := getRetString(1, "WorkflowChaincode queryByBillNo GetHistoryForKey error")
+		return shim.Error(res)
+	}
+	defer resultsIterator.Close()
+
+	var history []HistoryItem
+	var hisBill Bill
+	for resultsIterator.HasNext() {
+		historyData, err := resultsIterator.Next()
+		if err != nil {
+			res := getRetString(1, "WorkflowChaincode queryByBillNo resultsIterator.Next() error")
+			return shim.Error(res)
+		}
+
+		var hisItem HistoryItem
+		hisItem.TxId = historyData.TxId             //copy transaction id over
+		json.Unmarshal(historyData.Value, &hisBill) //un stringify it aka JSON.parse()
+		if historyData.Value == nil {               //bill has been deleted
+			var emptyBill Bill
+			hisItem.Bill = emptyBill //copy nil marble
+		} else {
+			json.Unmarshal(historyData.Value, &hisBill) //un stringify it aka JSON.parse()
+			hisItem.Bill = hisBill                      //copy bill over
+		}
+		history = append(history, hisItem) //add this tx to the list
+	}
+	// 将背书历史做为票据的一个属性 一同返回
+	bill.History = history
+
+	duetime, err := strconv.Atoi(bill.BillInfoDueDate)
+	if bill.BillInfoDueDate != "" && duetime < int(time.Now().Unix()) {
+		//状态改为逾期
+		bill.WaitEndorserCmID = ""
+		bill.WaitEndorserAcct = ""
+		bill.State = BillInfo_State_OverDue
+
+		//写入逾期惩罚
+		stub.PutState(OverDue_Prefix+bill.DrwrCmID, []byte("overdue"))
+
+	}
 	b, err := json.Marshal(bill)
 	if err != nil {
 		res := getRetString(1, "WorkflowChaincode Marshal queryByBillNo billList error")
