@@ -174,6 +174,9 @@ func (t *WorkflowChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response
 	} else if function == "queryMyWaitBill" {
 		// 查询等待我签字的提案
 		return t.queryMyWaitBill(stub, args)
+	} else if function == "checkDue" {
+		//检查是否逾期
+		return t.checkDue(stub, args)
 	}
 
 	logger.Errorf("Unknown action, check the first argument. Wrong action: %v", args[0])
@@ -551,7 +554,6 @@ func (a *WorkflowChaincode) checkDue(stub shim.ChaincodeStubInterface, args []st
 			res := getRetString(1, "WorkflowChaincode queryByBillNo resultsIterator.Next() error")
 			return shim.Error(res)
 		}
-
 		var hisItem HistoryItem
 		hisItem.TxId = historyData.TxId             //copy transaction id over
 		json.Unmarshal(historyData.Value, &hisBill) //un stringify it aka JSON.parse()
@@ -567,16 +569,15 @@ func (a *WorkflowChaincode) checkDue(stub shim.ChaincodeStubInterface, args []st
 	// 将背书历史做为票据的一个属性 一同返回
 	bill.History = history
 
+	//检查是否逾期
 	duetime, err := strconv.Atoi(bill.BillInfoDueDate)
 	if bill.BillInfoDueDate != "" && duetime < int(time.Now().Unix()) {
 		//状态改为逾期
 		bill.WaitEndorserCmID = ""
 		bill.WaitEndorserAcct = ""
 		bill.State = BillInfo_State_OverDue
-
 		//写入逾期惩罚
 		stub.PutState(OverDue_Prefix+bill.DrwrCmID, []byte("overdue"))
-
 	}
 	b, err := json.Marshal(bill)
 	if err != nil {

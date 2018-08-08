@@ -11,8 +11,28 @@ router.get('/', function(req, res) {
 router.get('/issue', function(req, res) {
     var url="http://localhost:4000/channels/mychannel/chaincodes/mycc"
     var client = new Client();
+    //get token
     var data=fs.readFileSync('token.txt');
     var token=data.toString();
+    //record due time
+    var jsStr=fs.readFileSync('duetime.json')
+    if (jsStr==""){
+        var jsObj={}
+    }else{
+        var jsObj=JSON.parse(jsStr)
+    }
+    if(req.query.BillInfoID in jsObj){
+        res.send("Bill number has existed")
+    }else{
+        jsObj[req.query.BillInfoID]=req.query.BillInfoDueDate
+    }
+    fs.writeFile('duetime.json', JSON.stringify(jsObj),  function(err) {
+        if (err) {
+            return console.error(err);
+        }
+        console.log("数据写入成功！");
+    });
+    //post data
     var args = {
         headers: {
             "authorization":"Bearer "+token,
