@@ -69,6 +69,8 @@ cd workflow/Express
 
 ```
 npm install
+npm install node-schedule
+npm install node-rest-client
 ```
 运行app，默认运行在3000端口
 

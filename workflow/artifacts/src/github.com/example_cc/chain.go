@@ -212,7 +212,7 @@ func (a *WorkflowChaincode) issue(stub shim.ChaincodeStubInterface, args []strin
 		return shim.Error(res)
 	}
 	logger.Error("%s", timestamp)
-	bill.BillInfoIsseDate = string(time.Now().Unix())
+	bill.BillInfoIsseDate = strconv.FormatInt(time.Now().Unix(), 10)
 
 	// 更改票据信息和状态并保存票据:票据状态设为待背书
 	bill.State = BillInfo_State_WaitTeacherSign

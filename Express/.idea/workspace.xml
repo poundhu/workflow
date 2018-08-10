@@ -2,11 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c6dd6985-dabc-4f31-ab7d-7366661884cf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../workflow/checkdue.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/checkdue.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/duetime.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../workflow/users.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/invoke.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/invoke.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/student.pug" beforeDir="false" afterPath="$PROJECT_DIR$/views/student.pug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../workflow/artifacts/src/github.com/example_cc/chain.go" beforeDir="false" afterPath="$PROJECT_DIR$/../workflow/artifacts/src/github.com/example_cc/chain.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../workflow/checkdue.js" beforeDir="false" afterPath="$PROJECT_DIR$/../workflow/checkdue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../workflow/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../workflow/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../workflow/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../workflow/package.json" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -30,7 +35,7 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="html" value="1" />
-          <entry key="js" value="8" />
+          <entry key="js" value="9" />
           <entry key="json" value="3" />
           <entry key="pug" value="11" />
           <entry key="www" value="3" />
@@ -41,13 +46,13 @@
           <entry key="HTML" value="1" />
           <entry key="JSON" value="3" />
           <entry key="Jade" value="11" />
-          <entry key="JavaScript" value="11" />
+          <entry key="JavaScript" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="html" value="5" />
-          <entry key="js" value="1844" />
+          <entry key="js" value="1877" />
           <entry key="pug" value="803" />
         </counts>
       </usages-collector>
@@ -55,7 +60,7 @@
         <counts>
           <entry key="HTML" value="5" />
           <entry key="Jade" value="803" />
-          <entry key="JavaScript" value="1844" />
+          <entry key="JavaScript" value="1877" />
         </counts>
       </usages-collector>
     </session>
@@ -81,8 +86,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="12" column="31" lean-forward="true" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
+            <state relative-caret-position="204">
+              <caret line="12" column="31" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/checkdue.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="247">
+              <caret line="42" column="28" lean-forward="true" selection-start-line="42" selection-start-column="28" selection-end-line="42" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -100,16 +114,16 @@
         <entry file="file://$PROJECT_DIR$/views/student.pug">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="238">
-              <caret line="14" column="47" lean-forward="true" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="47" />
+              <caret line="14" column="47" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="47" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/invoke.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="748">
-              <caret line="47" column="33" lean-forward="true" selection-start-line="47" selection-start-column="33" selection-end-line="47" selection-end-column="33" />
+            <state relative-caret-position="459">
+              <caret line="33" column="7" lean-forward="true" selection-start-line="28" selection-start-column="4" selection-end-line="33" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -173,6 +187,7 @@
         <option value="$PROJECT_DIR$/views/student.pug" />
         <option value="$PROJECT_DIR$/routes/invoke.js" />
         <option value="$PROJECT_DIR$/test.js" />
+        <option value="$PROJECT_DIR$/checkdue.js" />
       </list>
     </option>
   </component>
@@ -254,6 +269,20 @@
       </list>
     </option>
   </component>
+  <component name="RunManager" selected="Node.js.checkdue.js">
+    <configuration name="checkdue.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" nameIsGenerated="true" path-to-js-file="checkdue.js" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Node.js.bin/www" />
+      <item itemvalue="Node.js.checkdue.js" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.checkdue.js" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -266,12 +295,12 @@
       <updated>1533348040302</updated>
       <workItem from="1533348043709" duration="1436000" />
       <workItem from="1533350325883" duration="29019000" />
-      <workItem from="1533695377121" duration="4407000" />
+      <workItem from="1533695377121" duration="6722000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34862000" />
+    <option name="totallyTimeSpent" value="37177000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="316" y="24" width="1400" height="903" extended-state="0" />
@@ -283,7 +312,7 @@
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.37128073" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.37128073" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -385,21 +414,7 @@
     <entry file="file://$PROJECT_DIR$/views/student.pug">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
-          <caret line="14" column="47" lean-forward="true" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/admin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="114" column="30" selection-start-line="114" selection-start-column="30" selection-end-line="114" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="12" column="31" lean-forward="true" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
+          <caret line="14" column="47" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="47" />
         </state>
       </provider>
     </entry>
@@ -410,10 +425,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/routes/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="31" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/admin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="114" column="30" selection-start-line="114" selection-start-column="30" selection-end-line="114" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/routes/invoke.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="47" column="33" lean-forward="true" selection-start-line="47" selection-start-column="33" selection-end-line="47" selection-end-column="33" />
+        <state relative-caret-position="459">
+          <caret line="33" column="7" lean-forward="true" selection-start-line="28" selection-start-column="4" selection-end-line="33" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/checkdue.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="42" column="28" lean-forward="true" selection-start-line="42" selection-start-column="28" selection-end-line="42" selection-end-column="28" />
         </state>
       </provider>
     </entry>
